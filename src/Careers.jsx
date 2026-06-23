@@ -164,7 +164,7 @@ export default function CareersPage() {
   const [candTabName, setCandTabName] = useState("Candidates");
   const [jobsTabName, setJobsTabName] = useState("Jobs");
   const [selectedJob, setSelectedJob] = useState(null);
-  const [form, setForm] = useState({ name: "", email: "", phone: "", tags: "", note: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", tags: "", cvLink: "", note: "" });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -184,7 +184,7 @@ export default function CareersPage() {
 
   const openApply = (job) => {
     setSelectedJob(job);
-    setForm({ name: "", email: "", phone: "", tags: "", note: "" });
+    setForm({ name: "", email: "", phone: "", tags: "", cvLink: "", note: "" });
     setSubmitted(false);
   };
 
@@ -202,6 +202,8 @@ export default function CareersPage() {
       tags: form.tags,
       avatar: form.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase(),
       jobId: selectedJob.id || "",
+      cvLink: form.cvLink,
+      note: form.note,
     };
     await sheetPost(candTabName, row);
     setSubmitting(false);
@@ -307,6 +309,18 @@ export default function CareersPage() {
                   onChange={e => setForm(f => ({ ...f, tags: e.target.value }))}
                   placeholder="e.g. Excel, SAP, ACCA" />
 
+                <label style={S.label}>Link to your CV</label>
+                <input style={S.input} value={form.cvLink}
+                  onChange={e => setForm(f => ({ ...f, cvLink: e.target.value }))}
+                  placeholder="Paste a Google Drive, Dropbox, or OneDrive link" />
+                <p style={{
+                  fontFamily: "'Barlow', sans-serif", fontSize: 12, color: "#999",
+                  marginTop: -14, marginBottom: 18, lineHeight: 1.5,
+                }}>
+                  Upload your CV to Google Drive or Dropbox, set sharing to
+                  "Anyone with the link can view," then paste that link here.
+                </p>
+
                 <label style={S.label}>Anything you'd like us to know (optional)</label>
                 <textarea style={S.textarea} value={form.note}
                   onChange={e => setForm(f => ({ ...f, note: e.target.value }))}
@@ -338,4 +352,3 @@ export default function CareersPage() {
     </div>
   );
 }
- 
