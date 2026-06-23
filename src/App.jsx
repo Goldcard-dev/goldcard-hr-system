@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 // ─── Sheet Best live connection ───────────────────────────────────────────────
 // Your spreadsheet is reachable through one base link; each tab is addressed
 // by appending /tabs/<TabName>. We try the expected tab name first, then a
