@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+
 // ─── Sheet Best live connection ───────────────────────────────────────────────
 // Your spreadsheet is reachable through one base link; each tab is addressed
 // by appending /tabs/<TabName>. We try the expected tab name first, then a
@@ -343,7 +344,7 @@ export default function App() {
   const [modal, setModal] = useState(null); // "addJob" | "addCandidate" | "contract" | "onboard" | "candidateDetail"
   const [contractData, setContractData] = useState({ startDate: "", salary: "" });
   const [onboardTasks, setOnboardTasks] = useState([]);
-  const [newJob, setNewJob] = useState({ title: "", dept: "", location: "Accra", type: "Full-Time", status: "Active" });
+  const [newJob, setNewJob] = useState({ title: "", dept: "", location: "Accra", type: "Full-Time", status: "Active", descriptionLink: "" });
   const [newCand, setNewCand] = useState({ name: "", role: "", email: "", phone: "", stage: "Search", tags: "" });
   const [filterStage, setFilterStage] = useState("All");
   const [searchQ, setSearchQ] = useState("");
@@ -427,7 +428,7 @@ export default function App() {
     if (!newJob.title) return;
     const row = { ...newJob, id: uid(), posted: new Date().toISOString().slice(0, 10), applicants: 0 };
     setJobs(prev => [...prev, row]);
-    setNewJob({ title: "", dept: "", location: "Accra", type: "Full-Time", status: "Active" });
+    setNewJob({ title: "", dept: "", location: "Accra", type: "Full-Time", status: "Active", descriptionLink: "" });
     setModal(null);
     await sheetPost(jobsTabName, row);
   };
@@ -1003,6 +1004,11 @@ export default function App() {
                 <select style={S.input} value={newJob.type} onChange={e => setNewJob(n => ({ ...n, type: e.target.value }))}>
                   {["Full-Time", "Part-Time", "Contract", "Internship"].map(t => <option key={t}>{t}</option>)}
                 </select>
+              </div>
+              <div style={{ gridColumn: "1 / -1" }}>
+                <label style={S.label}>Job Description Link (PDF/Word, optional)</label>
+                <input style={S.input} placeholder="Paste a Google Drive or Dropbox link" value={newJob.descriptionLink || ""}
+                  onChange={e => setNewJob(n => ({ ...n, descriptionLink: e.target.value }))} />
               </div>
             </div>
             <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
